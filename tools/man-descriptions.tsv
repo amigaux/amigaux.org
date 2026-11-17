@@ -1,0 +1,12 @@
+# Descriptions for pages with no NAME section, from each page's own running header (garbled in
+# several, so no rule can read it). section<TAB>name<TAB>description
+3	olFlatLayout	Flat widget layout
+3	olInputFocus	Input focus routines
+3	olTextSelect	Text selection
+3	olTolkitInit	Toolkit initialization routine
+3w	olCorRsourc	Core resources
+3w	olHlpRegtrn	Help registration routine
+3w	olPixConver	Pixel conversion routines
+3w	olPkWid	Packed widgets
+3w	olShResourc	Shell resources
+3w	olVrtKeyBut	Virtual key/button

@@ -1,0 +1,12 @@
+[Unit]
+Description=Rebuild the visitor dashboards every 15 minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=15min
+# Rebuilding from the whole archive is idempotent, so a missed run just
+# catches up on the next tick.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

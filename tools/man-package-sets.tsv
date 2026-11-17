@@ -1,0 +1,12 @@
+# Which install brings a package whose man page took the name of an original page (tools/man-html.py
+# says so on both pages). package<TAB>where it comes from, after "comes"
+coreutil	with the extra set
+gtar	with the extra set
+gzip	with the extra set
+diffutil	with the extra set
+grep	with the extra set
+make	with the extra set
+vim	with the extra set
+acompat	with the extra set
+amxbase	with every 1.1 install
+rdate	with every 1.1 install

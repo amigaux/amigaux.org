@@ -1,0 +1,36 @@
+# The man sections in plain language, for /man/. tools/man-html.py stops if a section has no line.
+# group<TAB>code<TAB>name. Groups and sections show in this order. No page defines the letters 1C,
+# 1L, 5L and 8L, so their names say what the section holds, not what the letter stood for.
+Commands	1	General commands
+Commands	1a	Amiga-specific commands
+Commands	1b	BSD versions of commands
+Commands	1c	Connecting to other systems (UUCP)
+Commands	1f	Commands for forms and menus (FMLI)
+Commands	1l	Extra programs: news, mail, languages, tools
+Commands	1x	X Window System programs
+System administration	1m	System administration commands
+System administration	8	System maintenance and boot
+System administration	8l	Administering the extra programs
+Files and formats	4	File formats and configuration files
+Files and formats	4b	BSD version of a file format
+Files and formats	4z	XENIX version of a file format
+Files and formats	5	Character sets, environment, package files
+Files and formats	5a	Amiga-specific data formats
+Files and formats	5l	File formats of the extra programs
+Files and formats	7b	Document macros
+Devices and drivers	7	Devices and drivers
+Devices and drivers	7a	Amiga-specific devices
+Programming	2	System calls
+Programming	2z	XENIX system calls
+Programming	3	Libraries: curses, OPEN LOOK and others
+Programming	3a	Amiga-specific libraries
+Programming	3b	BSD C library
+Programming	3c	C library
+Programming	3e	ELF library
+Programming	3g	General-purpose library
+Programming	3m	Math library
+Programming	3n	Network library
+Programming	3s	Standard input and output
+Programming	3w	OPEN LOOK widgets
+Programming	3x	X Window and screen libraries
+Games	6	Games and demos

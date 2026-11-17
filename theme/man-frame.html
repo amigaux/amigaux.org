@@ -1,0 +1,10 @@
+{#- The frame tools/man-html.py wraps each man page in: built once by MkDocs, filled in and
+    removed by the man build. Links start at the base path because the pages sit at any depth. -#}
+{% extends "base.html" %}
+{%- set root = config.extra.base %}
+{%- set current_section = "docs" %}
+{% block title %}<!--MANTITLE--> — {{ config.site_name }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ config.extra.base }}man.css">
+<!--MANHEAD-->{% endblock %}
+{% block content %}<!--MANPAGE-->{% endblock %}

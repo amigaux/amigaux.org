@@ -1,0 +1,17 @@
+[Unit]
+Description=Rebuild the GoAccess visitor dashboards for amigaux.org
+After=network.target
+
+[Service]
+Type=oneshot
+# @DEPLOY_USER@ and @SERVER_DIR@ are filled in by install.sh.
+User=@DEPLOY_USER@
+Group=@DEPLOY_USER@
+# The deploy user is in `adm`, which is what makes /var/log/apache2 readable
+# without root.
+SupplementaryGroups=adm
+# Optional host settings for stats-update.sh (ARCHIVE, STATS_EXTRA).
+EnvironmentFile=-/etc/default/amigaux-stats
+ExecStart=@SERVER_DIR@/stats-update.sh
+Nice=10
+IOSchedulingClass=idle

@@ -1,0 +1,10 @@
+build/
+work/
+local/
+*.log
+__pycache__/
+*.pyc
+# server-only trees under the docroot, never committed
+sakuuu/
+/site/files/
+/site/video/

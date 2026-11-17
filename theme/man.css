@@ -1,0 +1,73 @@
+  /* The man pages under /man/: mandoc's HTML and the original preformatted pages, set in the
+     site's type system.  Loaded only by those pages, after site.css. */
+  .man h1.Sh, .man h2.Ss {
+    font-family: var(--display); text-transform: uppercase; font-weight: 600;
+    color: var(--dim); margin: 2rem 0 0.6rem;
+  }
+  .man h1.Sh { letter-spacing: 0.15em; font-size: 0.8rem; }
+  .man h2.Ss { letter-spacing: 0.1em; font-size: 0.75rem; }
+  .man .Nm, .man .Fl, .man .Cm, .man .Li, .man .Ev, .man .Pa, .man .Ic, .man .Fn, .man .Fd,
+  .man .Ft, .man .Dv, .man code {
+    font-family: var(--mono); font-size: 0.9em; color: var(--hi);
+  }
+  .man .Ar, .man .Va, .man .Em, .man i { font-style: italic; }
+  .man dl { margin: 0 0 1.1rem; }
+  .man dt { margin-top: 0.6rem; }
+  .man dd { margin: 0.2rem 0 0 2rem; }
+  .man .Bd-indent, .man .Bl-tag { margin-left: 0; }
+  /* A long word wraps and a wide table scrolls, on the narrowest screen too. */
+  .man { overflow-wrap: anywhere; }
+  .man pre { overflow-wrap: normal; }
+  .man table { width: auto; display: block; max-width: 100%; overflow-x: auto; }
+  /* Literal blocks and the original pages are text, not the green terminal. */
+  .man pre {
+    font-family: var(--mono); font-size: 0.85rem; line-height: 1.45; color: var(--fg);
+    background: none; border: 0; padding: 0; margin: 0 0 1.1rem;
+    white-space: pre; overflow-x: auto;
+  }
+  .man pre b { color: var(--hi); }
+  .man pre i { font-style: normal; text-decoration: underline; }
+  main > .man { max-width: none; }
+  .man-index td:first-child { white-space: nowrap; }
+  .man-trail { font-size: 0.85rem; color: var(--dim); margin: 0.9rem 0 1.2rem; }
+  .man-title { text-transform: none; margin-bottom: 0.3rem; }
+  .man-desc { font-size: 1.05rem; color: var(--fg); margin: 0 0 0.5rem; }
+  .man-from, .man-also { font-size: 0.85rem; color: var(--dim); margin: 0 0 0.3rem; }
+  .man-also { margin-bottom: 0.5rem; }
+  .man { margin-top: 1.2rem; }
+  .man-lookup { margin: 1rem 0 0; }
+  .man-groups { columns: 16rem 2; column-gap: 2rem; }
+  .man-groups > div { break-inside: avoid; margin-bottom: 1rem; }
+  .man-groups h4 { margin: 0 0 0.3rem; }
+  .man-groups ul { margin: 0; padding-left: 1.1rem; }
+  .man-groups code { color: var(--dim); font-size: 0.85em; }
+  .man-az a { display: inline-block; padding: 0.15rem 0.35rem; }
+  .man-list { list-style: none; padding: 0; margin: 1rem 0; }
+  .man-list li { margin: 0.3rem 0; }
+  .man-other { color: var(--dim); font-size: 0.85em; }
+  .man-search { margin: 0.9rem 0; }
+  .man-search label { display: block; font-size: 0.85rem; color: var(--dim); margin-bottom: 0.25rem; }
+  .man-search input { width: 100%; max-width: 28rem; font: inherit; color: var(--fg); background: #111;
+                      border: 1px solid #555; padding: 0.35rem 0.5rem; box-sizing: border-box; }
+  .man-search input:focus { border-color: var(--fg); outline: none; }
+  .man-search ol { list-style: none; padding: 0; margin: 0.5rem 0 0; }
+  .man-search li { margin: 0.35rem 0; }
+  .man-status { font-size: 0.85rem; color: var(--dim); margin: 0.3rem 0 0; }
+  .man-jump { font-size: 0.8rem; line-height: 1.9; color: var(--dim); margin: 0.6rem 0 0; }
+  .man h1.Sh:first-child { margin-top: 0; }
+  /* The original pages' text, flowing again. Marked words stay upright, as an italic \n reads as |n,
+     and brighter; what cannot be a plain word (-c, \n, /etc/passwd) takes the code face. */
+  .man.cat p { margin: 0 0 0.7rem; max-width: 65ch; }
+  .man.cat p i, .man.cat p b { font-style: normal; color: var(--hi); }
+  .man.cat p .c { font-family: var(--mono); font-size: 0.9em; }
+  .man.cat p .n { white-space: nowrap; }
+  .man.cat p b { font-weight: 700; }
+  .man.cat p u { font-family: var(--mono); font-size: 0.9em; color: var(--hi); }
+  .man.cat .i1 { margin-left: 0.9rem; }
+  .man.cat .i2 { margin-left: 1.8rem; }
+  .man.cat .i3 { margin-left: 2.7rem; }
+  .man.cat .i4 { margin-left: 3.6rem; }
+  .man.cat pre { margin-bottom: 0.7rem; }
+  .man.cat p.man-hang { padding-left: 1.6rem; text-indent: -1.6rem; }
+  .man-term { font-family: var(--mono); font-size: 0.9em; margin-right: 0.5rem; }
+  .man pre.wrap { white-space: pre-wrap; }

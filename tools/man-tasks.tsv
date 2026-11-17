@@ -1,0 +1,59 @@
+# Common tasks for /man/: what a reader wants, and the page that does it. tools/man-html.py stops if
+# a page is gone, so a package change cannot leave a dead entry. Descriptions are never written
+# here: they come from the page. group<TAB>task<TAB>section/name or site:path<TAB>more search words
+Files	list files	1/ls	list files directory contents dir
+Files	copy files	1/cp	copy files duplicate
+Files	move or rename files	1/mv	move rename files
+Files	delete files	1/rm	delete remove erase files
+Files	make a directory	1/mkdir	make create directory folder
+Files	show a file	1/cat	show print display file contents
+Files	read a file a page at a time	1/more	read page through file less pager
+Files	find files	1/find	find locate files
+Files	search inside files	1/grep	search find text in files
+Files	change who may read or write a file	1/chmod	file permissions change mode
+Files	link files	1/ln	link symlink files
+Editing	edit text	1/vi	edit text editor
+Editing	edit text line by line	1/ed	edit text editor line
+Archives	make or unpack tar archives	1/heirloom-tar	archive tar unpack extract
+Archives	make or unpack cpio archives	1/cpio	archive cpio unpack extract
+Archives	compress files	1/compress	compress shrink uncompress
+Archives	make zip archives	1l/zip	zip archive compress
+Archives	unpack zip archives	1l/unzip	unzip zip archive extract
+Disks	see free disk space	1m/df	disk space free
+Disks	see what uses the disk	1m/du	disk usage space
+Disks	mount a disk	1m/mount	mount unmount disk
+Disks	check a file system	1m/fsck	check repair file system disk
+Programs	see running programs	1/ps	list running processes programs
+Programs	stop a program	1/kill	kill stop process program
+Programs	run programs on a schedule	1/crontab	schedule cron run periodically
+Programs	run a program later	1/at	later schedule run
+Programs	show or set the date	1/date	date time clock
+Users	change a password	1/passwd	change password
+Users	become another user	1m/su	become root switch user
+Users	add a user	1m/useradd	add create user account
+Users	remove a user	1m/userdel	remove delete user account
+Users	see who is logged in	1/who	who logged in users
+Network	bring a network card up or down	1m/ifup	network card up down interface
+Network	see a network card's settings	1m/ifconfig	network address interface settings
+Network	get an address by DHCP	1m/dhcpc	dhcp address lease
+Network	see network connections	1m/netstat	network connections status
+Network	check another machine answers	1m/ping	ping check reachable host
+Network	log in to another machine	1/ssh	log in remotely remote login ssh secure
+Network	copy files to another machine	1/scp	copy files remote another machine ssh
+Network	log in with telnet	1/telnet	log in remote telnet
+Network	transfer files by FTP	1/ftp	transfer files ftp
+Network	set the clock from the network	1m/ntpsync	clock time sync ntp network
+Packages	install and update packages	1/apkg	install package software update upgrade
+Packages	install a package file	1m/pkgadd	install package file
+Packages	remove a package	1m/pkgrm	remove delete uninstall package
+Packages	list installed packages	1/pkginfo	list installed packages
+Kernel and drivers	see the loaded drivers and modules	1m/modadmin	drivers modules loaded kernel
+Kernel and drivers	the kernels and boot recovery	1m/kbootset	kernel boot recovery generation rollback
+X	start X	1/xstart	start x window graphics
+X	open a terminal window	1/xterm	terminal window x
+X	the window manager	1/twm	window manager
+Stopping safely	stop the machine safely	site:docs/start-stop/	stop halt shut down power off
+Stopping safely	shut down	1m/shutdown	shut down halt stop
+Sound	play sound	site:docs/sound/	sound audio music paula
+Help	read a manual page	1/man	manual help page
+Help	find a page by keyword	1/apropos	keyword search manual

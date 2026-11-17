@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{%- set root = (base_url ~ "/") if base_url != "." else "" %}
+{%- set current_section = page.url.split('/')[0] %}
+{% block title %}{% if page.is_homepage %}{{ config.site_name }}{% else %}{{ page.title }} — {{ config.site_name }}{% endif %}{% endblock %}
+{% block hero %}{% if page.is_homepage %}<section class="mhero">{{ cover }}<p class="tagline">{{ config.extra.tagline }}</p></section>{% endif %}{% endblock %}
+{% block content %}{{ page.content }}{% endblock %}

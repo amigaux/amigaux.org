@@ -1,0 +1,84 @@
+# amigaux.org: Markdown pages in pages/, our own theme in theme/, no plugins.
+# Built by tools/build.sh into build/site/ (gitignored); never committed.
+site_name: amigaux.org
+# tools/build.sh --preview sets these for the unlinked preview at /preview/.
+site_url: !ENV [AMIGAUX_SITE_URL, "https://amigaux.org/"]
+docs_dir: pages
+site_dir: build/site
+use_directory_urls: true
+strict: true
+
+theme:
+  name: null
+  custom_dir: theme
+  static_templates:
+    - man-frame.html     # filled in by tools/man-html.py, then removed
+
+# The built-in search plugin would add JavaScript to every page. Only the man pages have a little,
+# of our own (theme/man.js).
+plugins: []
+
+# Our own hook (no third-party code): %NAME% tokens in the pages from extra.constants.
+hooks:
+  - hooks/constants.py
+  - hooks/preview.py
+
+validation:
+  nav:
+    omitted_files: ignore      # subpages are reached from their section, not the bar
+  links:
+    not_found: warn
+    anchors: warn
+    absolute_links: warn
+    unrecognized_links: warn
+
+markdown_extensions:
+  - tables
+  - attr_list
+  - md_in_html
+  - def_list
+  - toc:
+      permalink: false
+
+# The bar: the first nav_primary entries always show; the rest sit behind Menu
+# on a phone, in the same row on a desktop, and again in the footer.
+nav:
+  - Install: install/index.md
+  - Downloads: downloads/index.md
+  - Docs: docs/index.md
+  - Hardware: hardware/index.md
+  - Packages: packages/index.md
+  - FAQ: faq/index.md
+  - GitHub: github/index.md
+  - News: news/index.md
+  - Contribute: contribute/index.md
+  - About: about/index.md
+
+extra:
+  base: !ENV [AMIGAUX_BASE, "/"]           # the site's path on the server
+  preview: !ENV [AMIGAUX_PREVIEW, ""]      # "1": noindex, the banner, TBD for placeholders
+  constants:
+    GRIMOIRE: https://grimoire.amigaux.org/            # the deep reference
+    SUPPORT_REPO: amigaux/amix                         # where reports and questions go
+    SUPPORT_ISSUES: https://github.com/amigaux/amix/issues/new/choose
+    SUPPORT_DISCUSSIONS: https://github.com/amigaux/amix/discussions
+    SUPPORT_HARDWARE: https://github.com/amigaux/amix/issues/new?template=hardware_support.yml
+    GITHUB_ORG: https://github.com/amigaux
+    MEDIA_1_1: https://github.com/amigaux/amix-media/releases/download/1.1   # the 1.1 release files
+    MEDIA_1_1_1: https://github.com/amigaux/amix-media/releases/download/1.1.1   # the 1.1.1 release files
+    MEDIA_1_1_2: https://github.com/amigaux/amix-media/releases/download/1.1.2   # the 1.1.2 release files
+    DATE_1_1_1: '2026-11-15'   # the 1.1.1 release date
+    DATE_1_1_2: '2026-11-16'   # the 1.1.2 release date
+    DATE_MEDIA_1_1_2: '2026-11-17'   # the 1.1.2 install media's release date
+  nav_primary: 4
+  footer_extra:                # in the footer only, not the bar
+    - {title: Licences, url: licences/}
+  tagline: Year of the Amiga Unix Desktop 2026
+  colophon: >-
+    amigaux.org is an independent, unofficial project. This site and its
+    developers are not affiliated with, endorsed by, or sponsored by Amiga Corporation. Amiga is a
+    registered trademark of Amiga Corporation. The project is likewise not affiliated with, endorsed
+    by, or sponsored by Commodore or any other trademark holder. AmigaOS and Amiga UNIX are
+    trademarks of their respective owners; UNIX is a registered trademark of The Open Group.
+    Amiga UNIX is Commodore's port of AT&amp;T UNIX System V Release 4; portions are copyright AT&amp;T,
+    UNIX System Laboratories and their successors.

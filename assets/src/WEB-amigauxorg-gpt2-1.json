@@ -1,0 +1,42 @@
+{
+ "asset": "WEB-amigauxorg",
+ "file": "WEB-amigauxorg-gpt2-1.png",
+ "model": "openai/gpt-5.4-image-2",
+ "alias": "gpt2",
+ "aspect": "16:9",
+ "seed": null,
+ "prompt": "A metal band emblem spelling the domain name amigaux.org, in lowercase exactly as written including the dot, in colossal chiselled letterforms that look carved from cracked grey granite, edges spiked and broken, lit by a cold blue-white rim light from above, monumental and symmetrical, dust and stone chips around the base. Below the emblem, clearly separated and MUCH plainer and fully legible, the exact text:  AMIGA UNIX, in a plain condensed sans-serif in cold white, uppercase. The whole image is on a flat pure black background with generous black margin. Wide banner composition. No other text anywhere, no band names, no watermark, no border.",
+ "refs": [],
+ "note": "web placeholder: amigaux.org emblem + AMIGA UNIX",
+ "usage": {
+  "prompt_tokens": 1742,
+  "completion_tokens": 3935,
+  "total_tokens": 5677,
+  "cost": 0.129766,
+  "is_byok": false,
+  "prompt_tokens_details": {
+   "cached_tokens": 0,
+   "cache_write_tokens": 0,
+   "audio_tokens": 0,
+   "video_tokens": 0
+  },
+  "cost_details": {
+   "upstream_inference_cost": 0.129766,
+   "upstream_inference_prompt_cost": 0.013936,
+   "upstream_inference_completions_cost": 0.11583
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 0,
+   "image_tokens": 3787,
+   "audio_tokens": 0
+  }
+ },
+ "cost_usd": 0.129766,
+ "byok": false,
+ "seconds": 82.5,
+ "response_id": "gen-1789400136-dB5CjQpmLFQH2XdQvfs1",
+ "generated_at": "2026-09-14T18:36:58+03:00",
+ "n_images_in_response": 1,
+ "bytes": 1214267,
+ "sha256": "e65cc7ae764972e4381546ce78272ea505b10a3e25b647f9dbf2ac3f3d402777"
+}

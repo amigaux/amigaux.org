@@ -1,0 +1,290 @@
+  /* Type system: the 1990-92 Unix documentation set.
+       Oswald SemiBold  — display; the wordmark artwork is cut from this face.  SIL OFL 1.1.
+       Arimo            — body; Helvetica-metric, the face AT&T/USL manuals and box covers were
+                          set in, and an X11 core font of the period.  Apache 2.0.
+       Cousine          — Courier-metric, for paths and code.  Apache 2.0.
+     All self-hosted, latin subsets; no third-party requests. */
+  @font-face { font-family: "Oswald"; font-style: normal; font-weight: 600; font-display: swap;
+               src: url(font/oswald-600-latin.woff2) format("woff2"); }
+  @font-face { font-family: "Arimo"; font-style: normal; font-weight: 400; font-display: swap;
+               src: url(font/arimo-400-latin.woff2) format("woff2"); }
+  @font-face { font-family: "Arimo"; font-style: normal; font-weight: 700; font-display: swap;
+               src: url(font/arimo-700-latin.woff2) format("woff2"); }
+  @font-face { font-family: "Cousine"; font-style: normal; font-weight: 400; font-display: swap;
+               src: url(font/cousine-400-latin.woff2) format("woff2"); }
+
+  :root {
+    --bg: #000;
+    --fg: #c9c9c9;
+    --hi: #fff;
+    --dim: #8b8b8b;
+    --faint: #6a6a6a;
+    --rule: #262626;
+    --red: #d62d2d;          /* the wordmark's single accent; rules only, never text */
+    --sans: Arimo, Helvetica, "Helvetica Neue", "Liberation Sans", Arial, sans-serif;
+    --display: Oswald, "Arial Narrow", Impact, var(--sans);
+    --mono: Cousine, "Courier New", "Liberation Mono", monospace;
+  }
+  html, body { margin: 0; background: var(--bg); }
+  body {
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    padding: 2.5rem 1.25rem 3.5rem;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: 100%;
+  }
+  /* Text stays at a reading width; tables and terminal blocks use the wider column. */
+  main { max-width: 64rem; margin: 0 auto; }
+  main > * { max-width: 44rem; }
+  main > .tbl, main > .term, main > pre { max-width: none; }
+
+  /* ---- header: the box cover, flush left as it was printed ---- */
+  header { margin-bottom: 2.75rem; }
+  header img { display: block; width: 318px; max-width: 100%; height: auto; }
+  .tagline {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: clamp(0.7rem, 2.1vw, 0.85rem);
+    color: var(--dim);
+    margin: 1.1rem 0 0;
+  }
+
+  /* ---- headings ---- */
+  h2 {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    color: var(--hi);
+    font-size: clamp(1.25rem, 3.4vw, 1.6rem);
+    margin: 3rem 0 1rem;
+  }
+  h2::before {                      /* the cover's red rule, in section-heading size */
+    content: "";
+    display: block;
+    width: 2.75rem; height: 4px;
+    background: var(--red);
+    margin-bottom: 0.85rem;
+  }
+  h3 {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--dim);
+    margin: 2rem 0 0.6rem;
+  }
+
+  p { margin: 0 0 1.1rem; }
+  b, strong { color: var(--hi); font-weight: 700; }
+  a { color: var(--hi); text-decoration: none; border-bottom: 1px solid #4a4a4a; }
+  a:hover { border-bottom-color: var(--red); }
+  code { font-family: var(--mono); font-size: 0.9em; color: var(--hi); }
+
+  ul { margin: 0 0 1.1rem; padding-left: 1.15rem; }
+  li { margin: 0.4rem 0; }
+  li::marker { color: #4a4a4a; }
+
+  /* ---- the callout ---- */
+  .note {
+    border-left: 4px solid var(--red);
+    padding: 0.15rem 0 0.15rem 1.25rem;
+    margin: 2.25rem 0 0.5rem;
+  }
+  .note h3 { color: var(--hi); margin-top: 0; }
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---- the one green element: a real terminal, where a terminal belongs ----
+     Green is the screen, red is the print; they never share a job.  Kept to
+     this block so the wordmark's red accent is never fighting it. */
+  .term, pre {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #35d95a;
+    background: #060a06;
+    border-left: 3px solid #1f7a37;
+    padding: 0.85rem 1rem;
+    margin: 1.2rem 0 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .term .u, pre code { color: #9dffb5; }   /* what you type */
+  pre code { font-size: inherit; }
+  span.term { display: block; }
+
+  /* ---- figures: a pixel display, never smoothed ---- */
+  .demo { margin: 1.75rem 0 0; }
+  .demo img { display: block; width: 100%; max-width: 720px; height: auto; image-rendering: pixelated; }
+  .demo figcaption {
+    margin-top: 0.5rem; color: var(--dim);
+    font-size: 0.85rem; line-height: 1.5;
+  }
+  .demo figcaption b, .demo figcaption strong { color: var(--fg); font-weight: 400; }
+
+  /* ---- repository lists: paths are paths, so they are set in Courier ---- */
+  .repo { list-style: none; padding-left: 0; }
+  .repo li { margin: 0.5rem 0; color: var(--dim); }
+  .repo a { font-family: var(--mono); font-size: 0.95rem; color: var(--hi); border-bottom-color: #3a3a3a; }
+  /* A repo named but not yet linkable: same voice as its neighbours, dimmer,
+     no underline -- so it reads as "not clickable yet", not as broken markup. */
+  .pending { font-family: var(--mono); font-size: 0.95rem; color: var(--dim); }
+
+  footer { margin-top: 3.5rem; padding-top: 1.35rem; border-top: 1px solid var(--rule); }
+  footer p {
+    margin: 0.4rem 0;
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-size: 0.78rem;
+    color: var(--faint);
+  }
+  footer a { color: var(--dim); border-bottom-color: #3a3a3a; }
+  footer .colophon {
+    font-family: var(--sans);
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--faint);
+    margin: 1.2rem 0 0;
+    max-width: 42rem;
+  }
+
+
+  /* the upper row: one line of section links, set like the cover's tagline */
+  nav.top { margin: 1.4rem 0 0; padding: 0.55rem 0; border-top: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule); }
+  nav.top ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap;
+               gap: 0.2rem 1.15rem; }
+  nav.top li { margin: 0; }
+  nav.top a { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.1em;
+              font-size: 0.82rem; color: var(--fg); border: 0; }
+  nav.top a:hover, nav.top a[aria-current] { color: var(--hi); box-shadow: 0 2px 0 var(--red); }
+  nav.top.secondary { border-top: 0; padding-top: 0; }
+  nav.top.secondary a { font-size: 0.72rem; color: var(--dim); }
+
+  header a { border: 0; }
+
+  /* the subpages as tiles */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+           gap: 0.9rem; margin: 1.5rem 0; }
+  .tiles a { display: block; border: 1px solid var(--rule); border-top: 3px solid var(--red);
+             padding: 0.75rem 0.9rem; color: var(--fg); }
+  .tiles a:hover { border-color: #444; border-top-color: var(--red); }
+  .tiles b { display: block; font-family: var(--display); text-transform: uppercase;
+             letter-spacing: 0.08em; font-weight: 600; margin-bottom: 0.25rem; }
+  .tiles span { font-size: 0.88rem; color: var(--dim); line-height: 1.45; display: block; }
+
+  /* tables (downloads, hardware, packages) */
+  .tbl { overflow-x: auto; margin: 1rem 0 1.5rem; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; line-height: 1.45; }
+  th, td { text-align: left; vertical-align: top; padding: 0.45rem 0.6rem 0.45rem 0;
+           border-bottom: 1px solid var(--rule); }
+  th { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.08em;
+       font-weight: 600; font-size: 0.75rem; color: var(--dim); }
+  td code { font-size: 0.85rem; }
+
+  /* tier labels: words, never colour alone */
+  .tier { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.06em;
+          font-size: 0.72rem; white-space: nowrap; padding: 0.05rem 0.35rem; border: 1px solid; }
+  .t-hw  { color: var(--hi); border-color: var(--hi); }
+  .t-emu { color: var(--fg); border-color: #666; }
+  .t-exp { color: #d6b02d; border-color: #8a7420; }
+  .t-next { color: var(--faint); border-color: #444; }
+
+  .news { list-style: none; padding: 0; }
+  .news li { margin: 0.7rem 0; }
+  .news time { font-family: var(--mono); font-size: 0.85rem; color: var(--dim); margin-right: 0.6rem; }
+
+  /* ==== mobile first ================================================
+     A slim sticky bar: wordmark + four links + Menu (a CSS checkbox, no JS).
+     Phone: row 1 = wordmark | Menu, row 2 = the four links; Menu opens the rest
+     as a full-width list.  Desktop (>= 960px): all in one row. */
+  body.l-mobile { padding: 0; }
+  body.l-mobile main { padding: 0 1.25rem 3.5rem; }
+  .mbar { position: sticky; top: 0; z-index: 10; margin: 0; background: rgba(0,0,0,0.96);
+          border-bottom: 1px solid var(--rule); }
+  .menu-toggle { position: absolute; opacity: 0; pointer-events: none; }
+  .mbar-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+              gap: 0.35rem 1rem; max-width: 72rem; margin: 0 auto; padding: 0.5rem 1.25rem; }
+  .mbar .mark { border: 0; display: block; line-height: 0; }
+  .mbar .mark img { width: 92px; height: auto; display: block; }
+  .mbar nav a, .mfoot a { font-family: var(--display); text-transform: uppercase;
+          letter-spacing: 0.09em; font-size: 0.8rem; color: var(--fg); border: 0; }
+  .mbar nav a:hover { color: var(--hi); }
+  .mbar nav a[aria-current] { color: var(--hi); box-shadow: 0 2px 0 var(--red); }
+  .mprimary { grid-column: 1 / -1; grid-row: 2; display: flex; justify-content: space-between;
+              gap: 0.5rem; padding-top: 0.15rem; }
+  .mdesk { display: none; }
+  .menu-btn { grid-column: 3; grid-row: 1; cursor: pointer; font-family: var(--display);
+              text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; color: var(--hi);
+              border: 1px solid #444; padding: 0.2rem 0.6rem; user-select: none; }
+  .menu-btn::after { content: "Menu \2630"; }
+  .menu-toggle:checked ~ .mbar-row .menu-btn::after { content: "Close \2715"; }
+  .menu-toggle:focus-visible ~ .mbar-row .menu-btn { outline: 2px solid var(--red); }
+  .mmore { display: none; border-top: 1px solid var(--rule); }
+  .menu-toggle:checked ~ .mmore { display: block; }
+  .mbar .mmore a { display: block; padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--rule);
+             font-size: 0.95rem; }
+  .mhero { padding: 1.4rem 0 0.2rem; }
+  .mhero img { width: 200px; height: auto; display: block; }
+  .mhero .tagline { margin-top: 0.7rem; }
+  body.l-mobile main > h2:first-of-type { margin-top: 1.6rem; }
+  .mfoot { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-bottom: 1.2rem; }
+  .mfoot a { font-size: 0.75rem; color: var(--dim); }
+  @media (min-width: 960px) {
+    .mbar-row { grid-template-columns: auto 1fr; padding: 0.6rem 1.25rem; }
+    .mprimary { grid-column: 2; grid-row: 1; justify-content: flex-end; gap: 1.1rem; padding: 0; }
+    .mdesk { display: contents; }
+    .menu-btn, .mmore { display: none; }
+    .mbar .mark img { width: 110px; }
+    .mhero { padding: 3rem 0 0.5rem; }
+    .mhero img { width: 318px; }
+  }
+
+  /* ---- content ---- */
+  ol { margin: 0 0 1.1rem; padding-left: 1.4rem; }
+  ol li { margin: 0.5rem 0; }
+  kbd { font-family: var(--mono); font-size: 0.82em; color: var(--hi); border: 1px solid #444;
+        border-radius: 3px; padding: 0 0.3em; }
+  /* a number in a cell: the cell takes the number's face, so the baseline matches */
+  .num, td:has(> .num) { white-space: nowrap; font-family: var(--mono); font-size: 0.82rem; }
+  .kv td:first-child { width: 55%; }
+  .kv td:first-child code { color: var(--fg); word-break: break-word; }
+  .dl td:first-child code { word-break: break-word; }
+  @media (min-width: 56rem) { .dl td:first-child code { white-space: nowrap; } }
+  .dl thead { display: none; }      /* the download tables carry a header only for the source */
+  /* narrow screens: each download row stacks, the file name on its own line */
+  @media (max-width: 55.99rem) {
+    /* The source leaves one space between the inline cells: the row's negative word-spacing
+       takes its width (Arimo and its Arial fallbacks: 0.278em) and nowrap its break, so the
+       size stays on the line of the last word, as with no space at all. */
+    .dl tr { display: block; padding: 0.5rem 0; border-bottom: 1px solid var(--rule);
+             word-spacing: -0.278em; white-space: nowrap; }
+    .dl td { display: inline; padding: 0; border: 0; word-spacing: normal; }
+    .dl td:not(:last-child) { white-space: normal; }
+    .dl td:first-child { display: block; }
+    .dl td:first-child code { word-break: break-all; }
+    .dl td:last-child::before { content: "\00a0· "; }
+  }
+  .rc { font-family: var(--mono); font-size: 0.85rem; color: #d6b02d; border-left: 3px solid #8a7420;
+        padding-left: 0.7rem; }
+  .rc b, .rc strong { color: #d6b02d; }
+  span.rc { display: block; margin-top: 0.4rem; }   /* a note line inside a list item */
+  .next { margin-top: 2rem; padding-top: 0.8rem; border-top: 1px solid var(--rule); font-size: 0.9rem; }
+  .term, pre { white-space: pre-wrap; }
+
+  /* An undecided fact: a span of class ph holding the marker word (see tools/check-site.py),
+     shown as TBD in the preview build and refused in a normal one, so it never goes live. */
+  .ph { font-family: var(--mono); font-size: 0.78rem; font-style: normal; color: #000;
+        background: #d6b02d; padding: 0 0.3rem; }
+
+/* The preview build only (tools/build.sh --preview). */
+.preview-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10; margin: 0; padding: .2rem 1rem;
+                  background: #ffd800; color: #000; font-size: .85rem; text-align: center; }
+body:has(> .preview-banner) { padding-bottom: 1.8rem; }

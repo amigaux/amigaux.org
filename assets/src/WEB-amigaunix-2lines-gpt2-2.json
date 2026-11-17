@@ -1,0 +1,42 @@
+{
+ "asset": "WEB-amigaunix-2lines",
+ "file": "WEB-amigaunix-2lines-gpt2-2.png",
+ "model": "openai/gpt-5.4-image-2",
+ "alias": "gpt2",
+ "aspect": "16:9",
+ "seed": null,
+ "prompt": "A metal band emblem spelling the words AMIGA UNIX, stacked as two lines: the five letters A-M-I-G-A above and the four letters U-N-I-X below, every letter present and readable, spelled exactly AMIGA and UNIX, in colossal chiselled letterforms that look carved from cracked grey granite, edges spiked and broken, lit by a cold blue-white rim light from above, monumental and symmetrical, dust and stone chips around the base. Below the emblem, clearly separated and MUCH plainer and fully legible, the exact text: amigaux.org, in a plain condensed sans-serif in cold white, lowercase exactly as written. The whole image is on a flat pure black background with generous black margin. Wide banner composition. No other text anywhere, no band names, no watermark, no border.",
+ "refs": [],
+ "note": "web placeholder: AMIGA over UNIX + amigaux.org, retake (first take spelled UNX)",
+ "usage": {
+  "prompt_tokens": 1795,
+  "completion_tokens": 3959,
+  "total_tokens": 5754,
+  "cost": 0.13055,
+  "is_byok": false,
+  "prompt_tokens_details": {
+   "cached_tokens": 0,
+   "cache_write_tokens": 0,
+   "audio_tokens": 0,
+   "video_tokens": 0
+  },
+  "cost_details": {
+   "upstream_inference_cost": 0.13055,
+   "upstream_inference_prompt_cost": 0.01436,
+   "upstream_inference_completions_cost": 0.11619
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 0,
+   "image_tokens": 3787,
+   "audio_tokens": 0
+  }
+ },
+ "cost_usd": 0.13055,
+ "byok": false,
+ "seconds": 78.4,
+ "response_id": "gen-1789400520-n9BoLhgwgb2whsaYRKRT",
+ "generated_at": "2026-09-14T18:43:18+03:00",
+ "n_images_in_response": 1,
+ "bytes": 1281939,
+ "sha256": "f478ff7b8105f489f19b470675f52825d79726a3a5155cf121a04e77cea97915"
+}

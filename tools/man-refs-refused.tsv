@@ -1,0 +1,4 @@
+# References the same-number rule must not link (tools/man-html.py): the page of that name under
+# the same main number is a different thing. name<TAB>section<TAB>why
+signal	3f	the FORTRAN signal, which the system does not have; 3B's signal is the C one
+screen	1a	an Amiga screen program; the only 1 page named screen is the terminal manager in 1L

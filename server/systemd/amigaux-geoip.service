@@ -1,0 +1,9 @@
+[Unit]
+Description=Refresh the DB-IP country database used by the stats dashboards
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# @SERVER_DIR@ is filled in by install.sh.
+ExecStart=@SERVER_DIR@/refresh-geoip.sh

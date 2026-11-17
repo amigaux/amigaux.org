@@ -1,0 +1,41 @@
+# What readers ask the /man/ search, for tools/man-browser-test.py: the question, then the pages
+# accepted as the right answer (a page or a site page's title). Empty answer: not checked, listed only.
+tar	heirloom-tar
+cp	cp
+ls	ls
+vi	vi
+ssh	ssh
+apkg	apkg
+uncompress	compress
+zcat	compress
+batch	at
+strcpy	string
+memcpy	memory
+fstat	stat
+umount	mount
+copy files	cp
+how do I copy files	cp
+list files	ls
+delete a file	rm
+move a file	mv
+rename file	mv
+search text	grep
+find files	find
+edit text	vi ed edit ex
+archive	heirloom-tar tar ar cpio
+disk space	df
+install package	apkg
+change password	passwd
+add user	useradd
+shutdown	shutdown
+kill process	kill
+network address	ifconfig ifup
+printer	lp lpstat enable dpost
+mail	mail
+manual	man
+compress	compress
+time	date time
+mount	mount
+format floppy	format fmtflop ddformat
+x window	xstart xterm X
+sound	Sound

@@ -1,0 +1,8 @@
+# mandoc, built from source by tools/build-mandoc.sh into build/tools/ (gitignored),
+# so every machine that builds the site renders the man pages with the same mandoc.
+# The sha256 and size agree with Debian's mdocml_1.14.6-1.dsc and FreeBSD's ports
+# textproc/mandoc distinfo.
+version 1.14.6
+url https://mandoc.bsd.lv/snapshots/mandoc-1.14.6.tar.gz
+sha256 8bf0d570f01e70a6e124884088870cbed7537f36328d512909eb10cd53179d9c
+size 697150

@@ -1,0 +1,45 @@
+{#- The page frame shared by the site's pages (main.html) and the man pages (man-frame.html).
+    A child sets `root`: the way back to the site root, relative ("../../") or the base path.
+    Loaded files use extra.base ("/", or "/preview/" for the preview build). -#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %}</title>
+{%- set base = config.extra.base %}
+{%- if config.extra.preview %}
+<meta name="robots" content="noindex,nofollow">{% endif %}
+<link rel="icon" href="{{ base }}favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="{{ base }}apple-touch-icon-180.png">
+<link rel="stylesheet" href="{{ base }}site.css">
+{%- block head %}{% endblock %}
+</head>
+<body class="l-mobile">
+{%- if config.extra.preview %}
+<p class="preview-banner">Preview — not the published site</p>{% endif %}
+{%- set cover %}<img src="{{ config.extra.base }}img/amiga-unix-boxcover.svg" width="318" height="107" alt="Amiga Unix — 68040 · 68060">{% endset %}
+{%- set section = current_section %}
+{%- macro links(items) %}{% for item in items %}<a href="{{ root }}{{ item.url }}"{% if item.url.split('/')[0] == section %} aria-current="page"{% endif %}>{{ item.title }}</a>{% endfor %}{% endmacro %}
+{%- set primary = nav.items[:config.extra.nav_primary] %}
+{%- set secondary = nav.items[config.extra.nav_primary:] %}
+
+<header class="mbar">
+  <input type="checkbox" id="menu" class="menu-toggle">
+  <div class="mbar-row">
+    <a class="mark" href="{{ root }}">{{ cover }}</a>
+    <nav class="mprimary">{{ links(primary) }}<span class="mdesk">{{ links(secondary) }}</span></nav>
+    <label for="menu" class="menu-btn" aria-label="More pages"></label>
+  </div>
+  <nav class="mmore">{{ links(secondary) }}</nav>
+</header>
+<main>
+{% block hero %}{% endblock %}
+{% block content %}{% endblock %}
+<footer>
+  <nav class="mfoot">{{ links(secondary) }}{{ links(config.extra.footer_extra or []) }}</nav>
+  <p class="colophon">{{ config.extra.colophon }}</p>
+</footer>
+</main>
+</body>
+</html>

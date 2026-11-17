@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh the country database monthly
+
+[Timer]
+# DB-IP publish a new free build each month; the script falls back to last
+# month's if this month's is not up yet, and keeps the old one on failure.
+OnCalendar=*-*-04 04:30
+Persistent=true
+RandomizedDelaySec=2h
+
+[Install]
+WantedBy=timers.target
