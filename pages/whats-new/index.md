@@ -27,7 +27,8 @@ Plans, with no dates; they may change.
 - The A600 (with a 68030 accelerator).
 - Fast RAM at or above 1 GiB on the 68030 and 68040/68060, which opens the Blizzard
   1230-IV/1240/1260, TF536, TF330 and ACA cards.
-- Shared libraries for packages, to save memory and disk.
+- Shared libraries for the rest of the packages, to save memory and disk; X11, Motif and CDE
+  already use them in 1.1.3.
 - `crash` and `adb` on the 68040/68060 kernel, as a boot option.
 
 ### 1.1.3
@@ -43,7 +44,8 @@ install uses the 1.1.2 media, then `apkg`.
   6.3-15.s, `motif` 2.3.8-3.s, `amixrt` 1.0-5); only the shared versions ship. A CDE session uses
   about 3.5–4 MB less memory; login takes about 5–6 s longer, and each program starts about
   0.4–0.9 s slower.
-- New X clients, in the shared form (`x11contrib` 6.0-1.s).
+- New X clients, in the shared form: the x11contrib set 6.0-1.s, the package `x11contrb` (a
+  package name has at most 9 characters); `apkg install x11contrb`.
 - `xztop` upgraded, in the shared form (`xztop` 1.1.1-3.s).
 - `apkg` 0.3.15: an install or upgrade that stops part-way is reported as partially installed,
   with the command that lays the package again.
