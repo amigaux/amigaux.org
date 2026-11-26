@@ -39,13 +39,14 @@ install uses the 1.1.2 media, then `apkg`.
 
 - CDE, the Common Desktop Environment, with the desktop Korn shell `dtksh` (`cde` 2.5.3-4.s).
   Installing it takes three steps, in order: `apkg upgrade apkg`, `apkg upgrade`, `apkg install
-  cde`. [Installing CDE](../release-notes/1.1.3.md#cde)
+  cde`, with a power cycle after the second when `apkg` ends with `power-cycle to boot it`.
+  [Installing CDE](../release-notes/1.1.3.md#cde)
 - X11R6.3, Motif and CDE built with shared libraries, on our patched C library runtime (`x11r6.3`
   6.3-15.s, `motif` 2.3.8-3.s, `amixrt` 1.0-5); only the shared versions ship. A CDE session uses
   about 3.5–4 MB less memory; login takes about 5–6 s longer, and each program starts about
   0.4–0.9 s slower.
-- New X clients, in the shared form: the x11contrib set 6.0-1.s, the package `x11contrb` (a
-  package name has at most 9 characters); `apkg install x11contrb`.
+- New X clients, in the shared form (`x11contrib` 6.0-1.s, new in 1.1.3); `apkg install
+  x11contrib`.
 - `xztop` upgraded, in the shared form (`xztop` 1.1.1-3.s).
 - `apkg` 0.3.15: an install or upgrade that stops part-way is reported as partially installed,
   with the command that lays the package again.
