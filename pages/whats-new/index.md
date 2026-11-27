@@ -45,8 +45,10 @@ install uses the 1.1.2 media, then `apkg`.
   6.3-15.s, `motif` 2.3.8-3.s, `amixrt` 1.0-5); only the shared versions ship. A CDE session uses
   about 3.5–4 MB less memory; login takes about 5–6 s longer, and each program starts about
   0.4–0.9 s slower.
-- New X clients, in the shared form (`x11contrib` 6.0-1.s, new in 1.1.3); `apkg install
-  x11contrib`.
+- Motif, the toolkit, with the `mwm` window manager (`motif` 2.3.8-3.s).
+- New X clients, `xeyes` and `xedit` (`x11contrib` 6.0-1.s); `apkg install x11contrib`.
+- New libraries that come with CDE: the C++ runtime (`cxxrt` 1.0-1), POSIX regular expressions
+  (`regex` 3.8-2) and JPEG (`libjpeg` 9f-1).
 - `xztop` upgraded, in the shared form (`xztop` 1.1.1-3.s).
 - `apkg` 0.3.15: an install or upgrade that stops part-way is reported as partially installed,
   with the command that lays the package again.
