@@ -101,29 +101,51 @@ for want, what in (("Common tasks", "the common tasks"), ('href="names/"', "the 
     if want not in landing:
         errors.append(f"/man/ does not offer {what}")
 
-# The search: the index knows every page and its words, and stays small.
+# The search: the index knows every page and its words, and stays small. index.js and the parts
+# loaded at first use stay within the budget together; each part on its own too.
+BUDGET = 160_000
 index_js = read(MAN, "index.js")
-m = re.match(r"MANIDX=(\".*\");\nMANSECT=(\{.*\});\n", index_js, re.S)
+m = re.match(r"MANSECT=(\{.*\});\nMANORDER=(\[.*\]);\nMANPARTS=(\[.*\]);\nMANADD\((\".*\")\);\n\Z", index_js, re.S)
 if not m:
     errors.append("/man/index.js is not what theme/man.js expects")
 else:
-    lines = [l.split("\t") for l in json.loads(m[1]).split("\n")]
+    order, part_list = json.loads(m[2]), json.loads(m[3])
+    lines = [l.split("\t") for l in json.loads(m[4]).split("\n")]
+    first = len(index_js.encode())
+    for part in part_list:
+        data = read(MAN, part["f"])
+        pm = re.fullmatch(r"MANADD\((\".*\")\);\n", data, re.S)
+        if not pm:
+            errors.append(f"/man/{part['f']} is not what theme/man.js expects")
+            continue
+        lines += [l.split("\t") for l in json.loads(pm[1]).split("\n")]
+        size = len(data.encode())
+        if size > BUDGET:
+            errors.append(f"/man/{part['f']} has grown to {size} bytes")
+        if not part["later"]:
+            first += size
+    if first > BUDGET:
+        errors.append(f"the search loads {first} bytes at first use")
+    stray = {f for f in os.listdir(MAN) if f.startswith("index") and f.endswith(".js")} - {"index.js"} \
+        - {part["f"] for part in part_list}
+    if stray:
+        errors.append(f"/man/ has index files no part names: {sorted(stray)}")
     if any(len(l) != 8 for l in lines):
-        errors.append("/man/index.js has a line without its eight fields")
+        errors.append("the search index has a line without its eight fields")
     known = {(l[1], l[0]) for l in lines}
     for r in rows:
         if (r[1], r[2]) not in known:
             errors.append(f"the search index lacks {r[1]}/{r[2]}")
-    missing = set(sections) - set(json.loads(m[2]))
+    missing = set(sections) - set(json.loads(m[1]))
     if missing:
         errors.append(f"the search index lacks section names: {sorted(missing)}")
+    if set(sections) - set(order):
+        errors.append(f"MANORDER lacks sections: {sorted(set(sections) - set(order))}")
     cp = [l for l in lines if l[:2] == ["cp", "1"]]
     if not cp or "copy" not in cp[0][5]:
         errors.append("the search index has no task words for cp")
     if not any(l[7] == "../docs/sound/" for l in lines):
         errors.append("the search index lacks the site's Sound page")
-    if len(index_js.encode()) > 160_000:
-        errors.append(f"/man/index.js has grown to {len(index_js.encode())} bytes")
 if os.path.getsize(os.path.join(args.site, "man.js")) > 8000:
     errors.append("man.js has grown past 8 KB")
 if '<div id="mansearch"' not in read(MAN, "1", "ls.html") or '<div id="mansearch"' not in landing:

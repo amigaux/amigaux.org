@@ -16,7 +16,8 @@ section's list). /man/<section>/ lists a section's pages with their descriptions
 of them A-Z. The <!--MANSECTIONS--> marker of /man/ becomes the common tasks (tools/man-tasks.tsv),
 the A-Z and the sections by their plain names (tools/man-sections.tsv). /man/<name>/ is a short address for every name a page goes by: a small
 file sending the reader to the page man(1) would show (section order below, a package's
-replacement of a stock program first). /man/index.js is what the search box (theme/man.js) reads.
+replacement of a stock program first). /man/index.js and its parts, one or more per section group
+(index-<group>.js), are what the search box (theme/man.js) reads.
 --no-troff skips the troff pages (a test without mandoc); a deploy always passes --mandoc.
 --empty (the preview build without the release's packages) only removes the frame and marks
 /man/ as TBD.
@@ -191,6 +192,8 @@ def name_line_troff(raw):
         text = " ".join(l.replace('"', "") for l in lines if l and not l.startswith((".", "'")))
     else:       # no NAME section: the page's first line of text
         text = next((l for l in raw.split("\n") if l.strip() and not l.startswith((".", "'"))), "")
+    if "\\-" not in text:      # Motif and CDE put an em dash between the names and the description
+        text = text.replace("\\(em", " \\- ")
     text = re.sub(r"\\f[BIRP]|\\f\(..|\\&|\\\(em", "", text)
     return text.replace("\\-", "-").replace("\\e", "\\").strip()
 
@@ -209,19 +212,24 @@ def pagefile(name):
     return "index-page.html" if name == "index" else f"{name}.html"
 
 
-def troff_source(raw):
+def troff_source(raw, path):
     """The text mandoc renders. A page that is only a .so is its target: mandoc refuses an
-    absolute .so. In a script that is also a man page (h2ph), nroff skips the script with
-    .ig and a diversion and mandoc prints it, so such a page starts at its .TH."""
+    absolute .so, and a relative one (.so man3/page.3, as Motif and CDE write them) is read from
+    the man directory the page is in. In a script that is also a man page (h2ph), nroff skips the
+    script with .ig and a diversion and mandoc prints it, so such a page starts at its .TH."""
     for _ in range(5):
         lines = [l for l in raw.split("\n") if l.strip() and not l.startswith('.\\"')]
-        m = re.fullmatch(r"\.so\s+(/\S+)\s*", lines[0]) if len(lines) == 1 else None
+        m = re.fullmatch(r"\.so\s+(\S+)\s*", lines[0]) if len(lines) == 1 else None
         if not m:
             break
-        if m.group(1) not in troff_paths:
-            sys.exit(f"man-html: .so names a page not collected: {m.group(1)}")
-        with open(troff_paths[m.group(1)], "rb") as f:
+        target = m.group(1)
+        if not target.startswith("/"):
+            target = os.path.normpath(os.path.join(os.path.dirname(os.path.dirname(path)), target))
+        if target not in troff_paths:
+            sys.exit(f"man-html: .so in {path} names a page not collected: {target}")
+        with open(troff_paths[target], "rb") as f:
             raw = f.read().decode("latin-1")
+        path = target
     th = re.search(r"^\.TH\b", raw, re.M)
     if th and re.search(r"^'ig00", raw[:th.start()], re.M):
         return raw[th.start():]
@@ -258,7 +266,7 @@ for kind, sect, name, pkg, path in rows:
     with open(os.path.join(args.src, kind, sect, name), "rb") as f:
         raw = f.read().decode("latin-1")
     if kind == "troff":
-        raw = troff_source(raw)
+        raw = troff_source(raw, path)
     line = name_line_cat(raw) if kind == "cat" else name_line_troff(raw)
     others, desc = split_name(re.sub(r"\s+", " ", line))
     desc = desc or descriptions.get((sect, name), "")
@@ -990,13 +998,21 @@ def clean(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
-lines = []
+# One part per section group, so a search fetches what it needs: the groups not in LATER load when
+# the box is first used, LATER (the programming pages, the largest) only when a search asks for it.
+# A group larger than PART_BUDGET is cut into parts by whole sections, the largest first; a match's
+# rank comes from its section, not its part, so the cut does not change the results.
+LATER = {"Programming"}
+PART_BUDGET = 100_000
+group_of = {sect: group for group, sects in groups.items() for sect in sects}
+parts = {group: [] for group in groups}
+site_lines = []
 for p in sorted(man_pages, key=lambda p: (section_key(p.sect), len(p.name), p.name)):
     won = [n for n in p.others if short_target(n) is p]
     lost = [n for n in p.others if short_target(n) is not p]
     words = " ".join(task_words.get(f"{p.sect}/{p.name}", []))
-    lines.append("\t".join((p.name, p.sect, "" if short_target(p.name) is p else "1",
-                            " ".join(won), " ".join(lost), words.lower(), clean(p.desc), "")))
+    parts[group_of[p.sect]].append("\t".join((p.name, p.sect, "" if short_target(p.name) is p else "1",
+                                              " ".join(won), " ".join(lost), words.lower(), clean(p.desc), "")))
 for d, _, files in sorted(os.walk(args.site)):
     rel = os.path.relpath(d, args.site).replace(os.sep, "/")
     if "index.html" not in files or rel == "." or rel == "man" or rel.startswith("man/"):
@@ -1006,10 +1022,36 @@ for d, _, files in sorted(os.walk(args.site)):
     if m and m[1].strip():
         words = " ".join(task_words.get(f"site:{rel}/", []))
         title = clean(html.unescape(m[1]))
-        lines.append("\t".join((title, "", "", "", "", words.lower(), title, f"../{rel}/")))
+        site_lines.append("\t".join((title, "", "", "", "", words.lower(), title, f"../{rel}/")))
 sect_names = {s: section_names[s] for s in entries}
+# index.js: the section names, the sections in man(1)'s order (which breaks ties between equal
+# matches across parts), the parts, and the site's own pages. Each part file adds its lines.
+part_list = []
+for group, lines in parts.items():
+    by_sect = {}            # section -> its lines, in the group's order
+    for line in lines:
+        by_sect.setdefault(line.split("\t")[1], []).append(line)
+    bins = []       # [bytes, [lines]]
+    for sect in sorted(by_sect, key=lambda x: -sum(len(json.dumps(l)) - 1 for l in by_sect[x])):
+        size = sum(len(json.dumps(l)) - 1 for l in by_sect[sect])     # as written, escapes and all
+        b = next((b for b in bins if b[0] + size <= PART_BUDGET), None)
+        if b is None:
+            b = [0, []]
+            bins.append(b)
+        b[0] += size
+        b[1].extend(by_sect[sect])
+    for n, (_, chunk) in enumerate(bins, 1):
+        chunk.sort(key=lambda l: section_key(l.split("\t")[1]))     # stable: a section keeps its order
+        file = "index-" + re.sub(r"[^a-z0-9]+", "-", group.lower()) + ("" if n == 1 else f"-{n}") + ".js"
+        data = "MANADD(" + json.dumps("\n".join(chunk)) + ");\n"
+        with open(os.path.join(MAN, file), "w", encoding="utf-8") as f:
+            f.write(data)
+        part_list.append({"g": group, "f": file, "kb": -(-len(data.encode()) // 1024), "later": int(group in LATER)})
+order = sorted({p.sect for p in man_pages}, key=section_key)
 with open(os.path.join(MAN, "index.js"), "w", encoding="utf-8") as f:
-    f.write("MANIDX=" + json.dumps("\n".join(lines)) + ";\nMANSECT=" + json.dumps(sect_names, separators=(",", ":")) + ";\n")
+    f.write("MANSECT=" + json.dumps(sect_names, separators=(",", ":")) + ";\nMANORDER="
+            + json.dumps(order, separators=(",", ":")) + ";\nMANPARTS=" + json.dumps(part_list, separators=(",", ":"))
+            + ";\nMANADD(" + json.dumps("\n".join(site_lines)) + ");\n")
 
 # ---- the site's own pages link in -----------------------------------------------------------------
 # `name(section)` in a page's Markdown becomes a link. One that has no page is left for
