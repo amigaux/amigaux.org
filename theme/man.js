@@ -1,10 +1,13 @@
 /* Search for /man/: the box is made here, so a browser without JavaScript never shows one that
-   does nothing. The index (man/index.js, from tools/man-html.py) loads when the box is first
-   used. Written for old browsers: no fetch, no arrow functions, no array helpers. */
+   does nothing. The index (man/index.js and one part per section group, from tools/man-html.py)
+   loads when the box is first used; a part marked later (the programming pages) loads only when a
+   search finds nothing elsewhere or the reader asks. Written for old browsers: no fetch, no arrow
+   functions, no array helpers. */
 (function () {
   var box = document.getElementById("mansearch");
   if (!box || !document.createElement || !box.appendChild) return;
   var base = box.getAttribute("data-base"), rows = null, loading = false, timer = null, results = [];
+  var rank = {}, waiting = 0, later = [], more = null;
   var form = document.createElement("form");
   var input = document.createElement("input");
   var status = document.createElement("p");
@@ -27,19 +30,23 @@
     if (text) status.appendChild(document.createTextNode(text));
   }
 
-  function parse() {
-    var lines = window.MANIDX.split("\n"), i, f;
-    rows = [];
+  /* Each part calls this with its lines; k keeps a line's place in its part, and rank its
+     section's place in man(1)'s order, so equal matches sort as one index would. */
+  window.MANADD = function (text) {
+    var lines = text.split("\n"), i, f;
+    if (!rows) rows = [];
     for (i = 0; i < lines.length; i++) {
       f = lines[i].split("\t");
+      if (f.length < 8) continue;
       rows.push({
         n: f[0], l: f[0].toLowerCase(), s: f[1], lost: f[2] === "1",
         r: " " + f[3].toLowerCase() + " ", a: " " + f[4].toLowerCase() + " ",
         t: " " + f[5] + " ", d: " " + f[6].toLowerCase().replace(/[^a-z0-9_.+-]+/g, " ") + " ",
-        text: f[6], u: f[7]
+        text: f[6], u: f[7], k: i
       });
     }
-  }
+  };
+  function key(e) { return e.s ? rank[e.s] : 999; }
 
   var STOP = " how do i a an the to my of on in for with is can what where ";
   function words(q) {
@@ -77,7 +84,7 @@
       else continue;
       out[out.length] = { e: e, sc: sc, i: i };
     }
-    out.sort(function (a, b) { return (b.sc - a.sc) || (a.i - b.i); });
+    out.sort(function (a, b) { return (b.sc - a.sc) || (key(a.e) - key(b.e)) || (a.e.k - b.e.k); });
     return out.slice(0, 25);
   }
   window.MANSEARCH = function (q) { /* for tools/man-browser-test.py */
@@ -92,12 +99,23 @@
   }
 
   function show() {
-    var q = input.value, i, e, li, a, code;
+    var q = input.value, i, e, li, a, code, one = /^\s*\S+\s*$/.test(q);
     while (list.firstChild) list.removeChild(list.firstChild);
     results = [];
-    if (!rows) return;
+    if (!rows || waiting) return;
     results = search(q);
+    if (later.length && q.replace(/\s/g, "") && (!results.length || (one && results[0].sc < 800))) {
+      loadLater();
+      if (waiting) return;
+    }
     say(q.replace(/\s/g, "") && !results.length ? "No page found. Try fewer words, or the A-Z list." : "");
+    if (later.length && q.replace(/\s/g, "")) {
+      a = document.createElement("a");
+      a.href = "#";
+      a.onclick = function () { loadLater(); return false; };
+      a.appendChild(document.createTextNode(more));
+      status.appendChild(a);
+    }
     for (i = 0; i < results.length; i++) {
       e = results[i].e;
       li = document.createElement("li");
@@ -114,26 +132,51 @@
     }
   }
 
-  function ready() {
-    if (rows || !window.MANIDX) return;
-    parse();
-    say("");
-    show();
+  function getScript(file, done) {
+    var s = document.createElement("script"), once = false;
+    function end() { if (!once) { once = true; done(); } }
+    waiting++;
+    s.src = base + file;
+    s.onload = end;
+    s.onreadystatechange = function () {
+      if (s.readyState === "loaded" || s.readyState === "complete") end();
+    };
+    s.onerror = function () { waiting = -1; say("The list of pages did not load. Try the A-Z list."); };
+    document.getElementsByTagName("head")[0].appendChild(s);
+  }
+  function arrived() {
+    if (waiting > 0) waiting--;
+    if (!waiting) { say(""); show(); }
+  }
+
+  function loadLater() {
+    var i, p = later;
+    later = [];
+    say("Loading the " + more.replace(/^Search the | too.*$/g, "") + "...");
+    for (i = 0; i < p.length; i++) getScript(p[i].f, arrived);
   }
 
   function load() {
-    if (rows || loading) return;
+    if (loading) return;
     loading = true;
     say("Loading the list of pages...");
-    var s = document.createElement("script");
-    s.src = base + "index.js";
-    s.onload = ready;
-    s.onreadystatechange = function () {
-      if (s.readyState === "loaded" || s.readyState === "complete") ready();
-    };
-    s.onerror = function () { loading = false; say("The list of pages did not load. Try the A-Z list."); };
-    document.getElementsByTagName("head")[0].appendChild(s);
+    getScript("index.js", function () {
+      var i, p = window.MANPARTS, kb = 0, names = [];
+      for (i = 0; i < window.MANORDER.length; i++) rank[window.MANORDER[i]] = i;
+      for (i = 0; i < p.length; i++) {
+        if (p[i].later) {
+          later.push(p[i]);
+          kb += p[i].kb;
+          if (names[names.length - 1] !== p[i].g.toLowerCase()) names.push(p[i].g.toLowerCase());
+        }
+        else getScript(p[i].f, arrived);
+      }
+      more = "Search the " + names.join(" and ") + " pages too (" + kb + " KB)";
+      arrived();
+    });
   }
+  window.MANLATER = function () { if (later.length) loadLater(); }; /* for tools/man-browser-test.py */
+  window.MANBUSY = function () { return !rows || waiting !== 0 || !more; };
 
   input.onfocus = load;
   input.onkeyup = input.oninput = function () {

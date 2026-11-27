@@ -4,6 +4,8 @@ Playwright and Chromium. Tests the build in build/site, whichever kind it is.
 
 usage: man-browser-test.py [--all]    --all also opens every page for the phone-width check
 
+  - the search index in parts: a common search loads no programming part; a search that finds
+    nothing elsewhere loads them by itself
   - the search questions in tools/man-search-questions.tsv: right page in the top five, and how many first
   - typing in the box, and Enter going to the first result
   - JavaScript off: landing page, A-Z, a short address and a page all work, with no search box
@@ -49,8 +51,21 @@ with sync_playwright() as p:
     pg.on("pageerror", lambda e: errs.append(str(e)))
     pg.goto(URL + "man/")
     pg.fill("#mansearch-q", "")
-    pg.focus("#mansearch-q")
-    pg.wait_for_function("window.MANIDX !== undefined")
+    pg.type("#mansearch-q", "copy files")
+    pg.wait_for_selector("#mansearch ol li:first-child a[href$='/1/cp.html']")
+    pg.wait_for_function("!MANBUSY()")
+    fetched = "performance.getEntriesByType('resource').map(e => e.name).filter(n => /index-programming/.test(n)).length"
+    if pg.evaluate(fetched):
+        fails.append("a search for 'copy files' loaded the programming pages")
+    if "programming pages too" not in pg.inner_text("#mansearch .man-status"):
+        fails.append("no offer to search the programming pages too")
+    pg.fill("#mansearch-q", "")
+    pg.type("#mansearch-q", "strcpy")
+    pg.wait_for_selector("#mansearch ol li a[href$='/string.html']")
+    if not pg.evaluate(fetched):
+        fails.append("a search for 'strcpy' found it without loading the programming pages")
+    print("parts: 'copy files' from the first parts; 'strcpy' loaded the programming pages by itself")
+    pg.wait_for_function("!MANBUSY()")
     first = top5 = 0
     for q, want in questions:
         got = pg.evaluate("q => { document.getElementById('mansearch-q').value = q; return MANSEARCH(q); }", q)
